@@ -147,21 +147,38 @@ endif ()
 
 # install target
 install(FILES
-    ${LIBRARY_DIR}/zstd.h
-    ${LIBRARY_DIR}/deprecated/zbuff.h
-    ${LIBRARY_DIR}/dictBuilder/zdict.h
-    ${LIBRARY_DIR}/dictBuilder/cover.h
-    ${LIBRARY_DIR}/common/zstd_errors.h
-    DESTINATION "include")
+    "${LIBRARY_DIR}/zstd.h"
+    "${LIBRARY_DIR}/deprecated/zbuff.h"
+    "${LIBRARY_DIR}/dictBuilder/zdict.h"
+    "${LIBRARY_DIR}/dictBuilder/cover.h"
+    "${LIBRARY_DIR}/common/zstd_errors.h"
+    DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}")
 
 if (ZSTD_BUILD_SHARED)
-    install(TARGETS libzstd_shared RUNTIME DESTINATION "bin"
-                                   LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-                                   ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+    install(TARGETS libzstd_shared EXPORT zstdExports
+                                   INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+    )
 endif()
 if (ZSTD_BUILD_STATIC)
-    install(TARGETS libzstd_static ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
+    install(TARGETS libzstd_static EXPORT zstdExports
+                                   INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+    )
 endif ()
+
+# export targets + find config
+configure_file(
+  "config.cmake.in"
+  "${CMAKE_CURRENT_BINARY_DIR}/zstdConfig.cmake"
+  @ONLY
+)
+install(FILES
+  "${CMAKE_CURRENT_BINARY_DIR}/zstdConfig.cmake"
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/zstd"
+)
+install(EXPORT zstdExports
+  NAMESPACE zstd::
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}/cmake/zstd"
+)
 
 # uninstall target
 if (NOT TARGET uninstall)
