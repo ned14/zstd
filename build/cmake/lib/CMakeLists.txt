@@ -127,6 +127,7 @@ if (ZSTD_BUILD_STATIC)
     set_target_properties(
             libzstd_static
             PROPERTIES
+            POSITION_INDEPENDENT_CODE On
             OUTPUT_NAME ${STATIC_LIBRARY_BASE_NAME})
 endif ()
 
