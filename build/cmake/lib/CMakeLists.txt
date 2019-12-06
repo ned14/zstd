@@ -158,11 +158,15 @@ install(FILES
 if (ZSTD_BUILD_SHARED)
     install(TARGETS libzstd_shared EXPORT zstdExports
                                    INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+                                   ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+                                   LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
     )
 endif()
 if (ZSTD_BUILD_STATIC)
     install(TARGETS libzstd_static EXPORT zstdExports
                                    INCLUDES DESTINATION "${CMAKE_INSTALL_INCLUDEDIR}"
+                                   ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+                                   LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
     )
 endif ()
 
